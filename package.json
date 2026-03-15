@@ -1,0 +1,12 @@
+{
+  "name": "claude-embed-launcher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Render-compatible launcher page for a Claude embed iframe",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
