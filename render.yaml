@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: claude-embed-launcher
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
