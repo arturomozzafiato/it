@@ -1,0 +1,12 @@
+{
+  "name": "it-services-career-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-hosted IT Services career website for Render",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

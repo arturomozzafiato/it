@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: it-services-career-guide
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
