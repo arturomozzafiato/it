@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: claude-embed-launcher
+    name: it-services-career-guide
     env: node
     plan: free
     buildCommand: npm install

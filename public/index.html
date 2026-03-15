@@ -1,43 +1,657 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Claude Embed Launcher</title>
+    <title>Khám Phá Nghề Dịch Vụ CNTT</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
       :root {
-        color-scheme: light dark;
+        --bg: #080816;
+        --card: #111125;
+        --card2: #191938;
+        --accent1: #6c5ce7;
+        --accent2: #00cec9;
+        --accent3: #fd79a8;
+        --accent4: #fdcb6e;
+        --accent5: #55efc4;
+        --accent6: #74b9ff;
+        --text: #e7e7f7;
+        --text2: #a7a7c7;
+        --glass: rgba(255,255,255,0.05);
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      html { scroll-behavior: smooth; }
 
-      html,
       body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        background: #0b0b0b;
+        font-family: 'Inter', sans-serif;
+        background: radial-gradient(circle at 10% 10%, #131338 0%, var(--bg) 40%, #070710 100%);
+        color: var(--text);
+        overflow-x: hidden;
+        line-height: 1.7;
       }
 
-      .frame {
+      .nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(10, 10, 26, 0.72);
+        backdrop-filter: blur(18px);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+
+      .nav-logo {
+        font-weight: 800;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .nav-links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+      .nav-links a {
+        color: var(--text2);
+        text-decoration: none;
+        font-size: 0.84rem;
+        font-weight: 600;
+      }
+      .nav-links a:hover { color: var(--accent2); }
+
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 6rem 2rem 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before,
+      .hero::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(6px);
+      }
+
+      .hero::before {
+        width: 520px;
+        height: 520px;
+        left: -120px;
+        top: -100px;
+        background: radial-gradient(circle, rgba(108,92,231,0.35), transparent 68%);
+        animation: float1 10s ease-in-out infinite;
+      }
+
+      .hero::after {
+        width: 520px;
+        height: 520px;
+        right: -120px;
+        bottom: -140px;
+        background: radial-gradient(circle, rgba(0,206,201,0.28), transparent 68%);
+        animation: float2 12s ease-in-out infinite;
+      }
+
+      @keyframes float1 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(60px,40px); } }
+      @keyframes float2 { 0%,100% { transform: translate(0,0); } 50% { transform: translate(-50px,-55px); } }
+      @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes drift {
+        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+        12% { opacity: 0.42; }
+        88% { opacity: 0.42; }
+        100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+      }
+
+      .particles { position: absolute; inset: 0; z-index: 1; overflow: hidden; }
+      .particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: drift linear infinite;
+      }
+
+      .hero-badge,
+      .hero h1,
+      .hero p,
+      .hero-cta,
+      .quick-stats {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        padding: 8px 18px;
+        border-radius: 999px;
+        border: 1px solid var(--accent2);
+        color: var(--accent2);
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        animation: fadeUp 0.8s ease;
+      }
+
+      h1 {
+        margin-top: 1.2rem;
+        font-size: clamp(2.3rem, 5.6vw, 4.8rem);
+        line-height: 1.08;
+        font-weight: 900;
+        animation: fadeUp 0.8s ease 0.12s both;
+      }
+
+      .gradient {
+        background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        max-width: 690px;
+        margin-top: 1.2rem;
+        color: var(--text2);
+        font-size: 1.05rem;
+        animation: fadeUp 0.8s ease 0.25s both;
+      }
+
+      .hero-cta {
+        margin-top: 2rem;
+        display: flex;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: fadeUp 0.8s ease 0.35s both;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 999px;
+        padding: 12px 24px;
+        font-size: 0.9rem;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+      }
+
+      .btn-primary {
+        color: white;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 28px rgba(108,92,231,0.4);
+      }
+
+      .btn-outline {
+        color: var(--accent2);
+        border: 1px solid var(--accent2);
+        background: transparent;
+      }
+      .btn-outline:hover { background: rgba(0,206,201,0.14); }
+
+      .quick-stats {
+        margin-top: 2rem;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(110px, 1fr));
+        gap: 0.8rem;
+        width: min(700px, 100%);
+        animation: fadeUp 0.8s ease 0.45s both;
+      }
+
+      .stat {
+        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03);
+        border-radius: 14px;
+        padding: 0.8rem;
+      }
+      .stat strong { display: block; font-size: 1.15rem; color: var(--accent4); }
+      .stat span { color: var(--text2); font-size: 0.78rem; }
+
+      section { padding: 4.8rem 2rem; max-width: 1200px; margin: 0 auto; }
+      .section-label {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 0.8rem;
+      }
+      .section-title {
+        font-size: clamp(1.7rem, 3.4vw, 2.8rem);
+        font-weight: 800;
+      }
+      .section-desc {
+        margin-top: 0.7rem;
+        margin-bottom: 2.2rem;
+        max-width: 740px;
+        color: var(--text2);
+      }
+
+      .features-grid,
+      .career-grid,
+      .trends-grid {
+        display: grid;
+        gap: 1.35rem;
+      }
+      .features-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+      .career-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+      .trends-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+      .card {
+        background: var(--glass);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 18px;
+        padding: 1.4rem;
+      }
+
+      .feature-card:hover,
+      .trend-card:hover,
+      .career-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(108,92,231,0.35);
+      }
+
+      .feature-card,
+      .trend-card,
+      .career-card {
+        transition: transform 0.3s ease, border-color 0.3s ease;
+      }
+
+      .feature-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+
+      .pros-cons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+      }
+
+      .pros-box,
+      .cons-box {
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.08);
+        padding: 1.5rem;
+      }
+
+      .pros-box { background: linear-gradient(145deg, rgba(85,239,196,0.08), var(--glass)); }
+      .cons-box { background: linear-gradient(145deg, rgba(253,121,168,0.08), var(--glass)); }
+
+      .pro-item,
+      .con-item {
+        padding: 0.7rem 0;
+        border-bottom: 1px dashed rgba(255,255,255,0.07);
+        color: var(--text2);
+      }
+      .pro-item:last-child,
+      .con-item:last-child { border-bottom: 0; }
+
+      .salary-table {
         width: 100%;
-        height: 100%;
-        border: 0;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+      }
+      .salary-table th {
+        text-align: left;
+        padding: 10px 12px;
+        color: var(--text2);
+        font-size: 0.76rem;
+        text-transform: uppercase;
+      }
+      .salary-table td {
+        padding: 14px 12px;
+        background: var(--glass);
+        border-top: 1px solid rgba(255,255,255,0.04);
+        border-bottom: 1px solid rgba(255,255,255,0.04);
+      }
+      .salary-table td:first-child {
+        border-radius: 10px 0 0 10px;
+        border-left: 1px solid rgba(255,255,255,0.04);
+      }
+      .salary-table td:last-child {
+        border-radius: 0 10px 10px 0;
+        border-right: 1px solid rgba(255,255,255,0.04);
+      }
+
+      .skill-map {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .skill-bubble {
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.1);
+        font-size: 0.82rem;
+        color: var(--text2);
+        background: rgba(255,255,255,0.03);
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(108,92,231,0.35), transparent);
+      }
+
+      .career-card {
+        background: linear-gradient(145deg, var(--card), var(--card2));
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 20px;
+        overflow: hidden;
+      }
+
+      .career-header,
+      .career-body,
+      .career-footer { padding: 1.2rem 1.3rem; }
+      .career-header { padding-bottom: 0.2rem; position: relative; }
+      .career-number {
+        position: absolute;
+        top: 8px;
+        right: 16px;
+        font-size: 3rem;
+        font-weight: 800;
+        opacity: 0.08;
+      }
+      .career-emoji { font-size: 2rem; display: block; margin-bottom: 0.45rem; }
+      .subtitle { color: var(--text2); font-size: 0.82rem; }
+      .task-list { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+      .task-list li {
+        font-size: 0.76rem;
+        color: var(--text2);
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        padding: 5px 10px;
+      }
+      .salary-bar {
+        margin-top: 0.8rem;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.1);
+        overflow: hidden;
+      }
+      .salary-fill { height: 100%; border-radius: 999px; }
+      .salary-range {
+        margin-top: 0.35rem;
+        display: flex;
+        justify-content: space-between;
+        color: var(--text2);
+        font-size: 0.74rem;
+      }
+
+      .cert-tag {
+        font-size: 0.7rem;
+        border: 1px solid;
+        border-radius: 8px;
+        padding: 4px 8px;
+      }
+
+      .insight {
+        margin-top: 1rem;
+        border-left: 3px solid var(--accent2);
+        padding: 0.8rem 1rem;
+        background: rgba(0,206,201,0.08);
+        color: var(--text2);
+        border-radius: 8px;
+      }
+
+      footer {
+        text-align: center;
+        padding: 2.8rem 1.4rem;
+        color: var(--text2);
+        border-top: 1px solid rgba(255,255,255,0.06);
+      }
+      .footer-logo {
+        display: block;
+        font-size: 1.35rem;
+        font-weight: 800;
+        margin-bottom: 0.7rem;
+        background: linear-gradient(135deg, var(--accent1), var(--accent2));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      @media (max-width: 820px) {
+        .pros-cons { grid-template-columns: 1fr; }
+      }
+
+      @media (max-width: 640px) {
+        .nav { padding: 0.9rem 1rem; }
+        .nav-links { display: none; }
+        section { padding: 3.5rem 1rem; }
+        .quick-stats { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
-    <iframe
-      class="frame"
-      src="https://claude.site/public/artifacts/85b7e7a0-77d5-4e3b-bef8-3445506f25ee/embed"
-      title="Claude Artifact"
-      allow="clipboard-write"
-      allowfullscreen
-      loading="eager"
-      referrerpolicy="no-referrer"
-    ></iframe>
+    <nav class="nav">
+      <div class="nav-logo">IT Services Guide</div>
+      <div class="nav-links">
+        <a href="#overview">Tổng quan</a>
+        <a href="#careers">Nghề nghiệp</a>
+        <a href="#salary">Mức lương</a>
+        <a href="#trends">Xu hướng</a>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="particles" id="particles"></div>
+      <div class="hero-badge">IT Services Career 2025</div>
+      <h1>Khám phá <span class="gradient">Dịch Vụ CNTT</span><br />Cơ hội phát triển 2025</h1>
+      <p>
+        Website được self-host hoàn toàn trên server của bạn, tối ưu để deploy trực tiếp trên Render.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#careers">Khám phá nghề</a>
+        <a class="btn btn-outline" href="#salary">Xem mức lương</a>
+      </div>
+      <div class="quick-stats">
+        <div class="stat"><strong>6+</strong><span>Vai trò tiêu biểu</span></div>
+        <div class="stat"><strong>5–60M</strong><span>VNĐ/tháng tham khảo</span></div>
+        <div class="stat"><strong>24/7</strong><span>Nhu cầu tuyển dụng liên tục</span></div>
+      </div>
+    </header>
+
+    <section id="overview">
+      <div class="section-label" style="background:rgba(108,92,231,.16);color:var(--accent1)">Tổng quan</div>
+      <h2 class="section-title">Đặc điểm nhóm nghề Dịch vụ CNTT</h2>
+      <p class="section-desc">Cung cấp dịch vụ hỗ trợ, vận hành, tư vấn và bảo trì hệ thống. Đây là nhóm nghề thiên về ứng dụng thực tế, kết hợp kỹ thuật và giao tiếp đa phòng ban.</p>
+      <div class="features-grid">
+        <div class="card feature-card"><div class="feature-icon">🎯</div><h3>Tính ứng dụng cao</h3><p>Giải quyết vấn đề vận hành thật trong doanh nghiệp mỗi ngày.</p></div>
+        <div class="card feature-card"><div class="feature-icon">🤝</div><h3>Giao tiếp thường xuyên</h3><p>Làm việc trực tiếp với người dùng cuối, team kỹ thuật và quản lý.</p></div>
+        <div class="card feature-card"><div class="feature-icon">⚡</div><h3>Kỹ năng đa chiều</h3><p>Cần đồng thời nền tảng kỹ thuật, tư duy hệ thống và kỹ năng mềm.</p></div>
+        <div class="card feature-card"><div class="feature-icon">🌍</div><h3>Cơ hội toàn cầu</h3><p>Chuẩn công nghệ quốc tế mở ra cơ hội remote và dự án nước ngoài.</p></div>
+        <div class="card feature-card"><div class="feature-icon">📈</div><h3>Thu nhập tăng đều</h3><p>Chứng chỉ và kinh nghiệm giúp tốc độ tăng lương nhanh và bền.</p></div>
+        <div class="card feature-card"><div class="feature-icon">🔥</div><h3>Nhu cầu cao</h3><p>Hầu hết doanh nghiệp đều cần vận hành hạ tầng CNTT ổn định.</p></div>
+      </div>
+      <p class="insight">💡 Gợi ý: nếu mới bắt đầu, hãy đi từ Helpdesk → SysAdmin/Cloud hoặc Security để có lộ trình tăng trưởng rõ ràng.</p>
+    </section>
+
+    <div class="divider"></div>
+
+    <section>
+      <div class="section-label" style="background:rgba(85,239,196,.16);color:var(--accent5)">Phân tích</div>
+      <h2 class="section-title">Ưu điểm & nhược điểm</h2>
+      <p class="section-desc">Hiểu đúng bản chất công việc giúp bạn chọn hướng học và nghề phù hợp hơn.</p>
+      <div class="pros-cons">
+        <div class="pros-box">
+          <h3>✅ Ưu điểm</h3>
+          <div class="pro-item"><strong>Nhu cầu ổn định:</strong> khó bị bão hòa trong ngắn hạn.</div>
+          <div class="pro-item"><strong>Cơ hội thăng tiến:</strong> từ vận hành lên quản trị, kiến trúc, tư vấn.</div>
+          <div class="pro-item"><strong>Linh hoạt nghề nghiệp:</strong> có thể chuyển ngang sang cloud, security, devops.</div>
+        </div>
+        <div class="cons-box">
+          <h3>⚠️ Nhược điểm</h3>
+          <div class="con-item"><strong>Áp lực phản ứng nhanh:</strong> sự cố hệ thống cần xử lý tức thời.</div>
+          <div class="con-item"><strong>Đòi hỏi học liên tục:</strong> công cụ và nền tảng thay đổi rất nhanh.</div>
+          <div class="con-item"><strong>Ca trực ngoài giờ:</strong> một số vị trí yêu cầu trực 24/7.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="careers">
+      <div class="section-label" style="background:rgba(253,121,168,.16);color:var(--accent3)">Nghề nghiệp</div>
+      <h2 class="section-title">6 nghề tiêu biểu</h2>
+      <p class="section-desc">Mỗi vai trò có nhiệm vụ, kỹ năng trọng tâm và dải thu nhập khác nhau.</p>
+
+      <div class="career-grid">
+        <div class="career-card">
+          <div class="career-header"><span class="career-number">01</span><span class="career-emoji">🛠️</span><h3>Kỹ sư Hỗ trợ Kỹ thuật</h3><div class="subtitle">Technical Support / Helpdesk</div></div>
+          <div class="career-body">
+            <h4>Công việc</h4><ul class="task-list"><li>Fix lỗi máy/mạng</li><li>Cài đặt phần mềm</li><li>Hỗ trợ người dùng</li></ul>
+            <h4>Kỹ năng</h4><ul class="task-list"><li>LAN/WiFi</li><li>Windows</li><li>Active Directory</li></ul>
+            <h4>Mức lương</h4><div class="salary-bar"><div class="salary-fill" style="width:50%;background:linear-gradient(90deg,var(--accent1),var(--accent2))"></div></div><div class="salary-range"><span>6 triệu</span><span>30 triệu</span></div>
+          </div>
+          <div class="career-footer"><span class="cert-tag" style="color:var(--accent2);border-color:var(--accent2)">CompTIA A+</span></div>
+        </div>
+
+        <div class="career-card">
+          <div class="career-header"><span class="career-number">02</span><span class="career-emoji">💼</span><h3>Chuyên viên Tư vấn CNTT</h3><div class="subtitle">IT Consultant</div></div>
+          <div class="career-body">
+            <h4>Công việc</h4><ul class="task-list"><li>Phân tích nhu cầu</li><li>Đề xuất giải pháp</li><li>Lộ trình số hóa</li></ul>
+            <h4>Kỹ năng</h4><ul class="task-list"><li>Thuyết trình</li><li>Cloud/ERP</li><li>Quản lý dự án</li></ul>
+            <h4>Mức lương</h4><div class="salary-bar"><div class="salary-fill" style="width:75%;background:linear-gradient(90deg,var(--accent3),var(--accent4))"></div></div><div class="salary-range"><span>7 triệu</span><span>45 triệu</span></div>
+          </div>
+          <div class="career-footer"><span class="cert-tag" style="color:var(--accent4);border-color:var(--accent4)">AWS SAA</span></div>
+        </div>
+
+        <div class="career-card">
+          <div class="career-header"><span class="career-number">03</span><span class="career-emoji">🖥️</span><h3>Quản trị Hệ thống/Mạng</h3><div class="subtitle">System / Network Admin</div></div>
+          <div class="career-body">
+            <h4>Công việc</h4><ul class="task-list"><li>Quản lý server</li><li>Giám sát mạng</li><li>Backup định kỳ</li></ul>
+            <h4>Kỹ năng</h4><ul class="task-list"><li>Linux</li><li>TCP/IP, VPN</li><li>VMware</li></ul>
+            <h4>Mức lương</h4><div class="salary-bar"><div class="salary-fill" style="width:55%;background:linear-gradient(90deg,var(--accent5),var(--accent6))"></div></div><div class="salary-range"><span>12 triệu</span><span>22 triệu</span></div>
+          </div>
+          <div class="career-footer"><span class="cert-tag" style="color:var(--accent1);border-color:var(--accent1)">CCNA</span></div>
+        </div>
+
+        <div class="career-card">
+          <div class="career-header"><span class="career-number">04</span><span class="career-emoji">🔒</span><h3>Chuyên gia An ninh mạng</h3><div class="subtitle">Cybersecurity Specialist</div></div>
+          <div class="career-body">
+            <h4>Công việc</h4><ul class="task-list"><li>Giám sát SOC</li><li>Phân tích log</li><li>Ứng cứu sự cố</li></ul>
+            <h4>Kỹ năng</h4><ul class="task-list"><li>SIEM</li><li>Pentest</li><li>Firewall</li></ul>
+            <h4>Mức lương</h4><div class="salary-bar"><div class="salary-fill" style="width:100%;background:linear-gradient(90deg,var(--accent1),var(--accent3))"></div></div><div class="salary-range"><span>15 triệu</span><span>60 triệu</span></div>
+          </div>
+          <div class="career-footer"><span class="cert-tag" style="color:var(--accent3);border-color:var(--accent3)">Security+</span></div>
+        </div>
+
+        <div class="career-card">
+          <div class="career-header"><span class="career-number">05</span><span class="career-emoji">🔧</span><h3>Kỹ thuật viên Sửa chữa</h3><div class="subtitle">Computer Repair Technician</div></div>
+          <div class="career-body">
+            <h4>Công việc</h4><ul class="task-list"><li>Sửa phần cứng</li><li>Bảo trì máy</li><li>Tư vấn nâng cấp</li></ul>
+            <h4>Kỹ năng</h4><ul class="task-list"><li>Phần cứng PC</li><li>Kiểm tra lỗi</li><li>Tỉ mỉ</li></ul>
+            <h4>Mức lương</h4><div class="salary-bar"><div class="salary-fill" style="width:35%;background:linear-gradient(90deg,var(--accent4),var(--accent5))"></div></div><div class="salary-range"><span>11 triệu</span><span>17 triệu</span></div>
+          </div>
+          <div class="career-footer"><span class="cert-tag" style="color:var(--accent5);border-color:var(--accent5)">CompTIA A+</span></div>
+        </div>
+
+        <div class="career-card">
+          <div class="career-header"><span class="career-number">06</span><span class="career-emoji">🌐</span><h3>Thiết kế & Phát triển Web</h3><div class="subtitle">Web Designer / Web Developer</div></div>
+          <div class="career-body">
+            <h4>Công việc</h4><ul class="task-list"><li>Thiết kế UI/UX</li><li>Lập trình web</li><li>Bảo trì hệ thống</li></ul>
+            <h4>Kỹ năng</h4><ul class="task-list"><li>HTML/CSS/JS</li><li>React/Vue</li><li>Node.js</li></ul>
+            <h4>Mức lương</h4><div class="salary-bar"><div class="salary-fill" style="width:60%;background:linear-gradient(90deg,var(--accent6),var(--accent2))"></div></div><div class="salary-range"><span>5 triệu</span><span>20+ triệu</span></div>
+          </div>
+          <div class="career-footer"><span class="cert-tag" style="color:var(--accent6);border-color:var(--accent6)">Full-stack</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="salary">
+      <div class="section-label" style="background:rgba(253,203,110,.16);color:var(--accent4)">Thu nhập</div>
+      <h2 class="section-title">Bảng so sánh mức lương</h2>
+      <p class="section-desc">Mức tham khảo theo kinh nghiệm tại Việt Nam (VNĐ/tháng).</p>
+      <div style="overflow:auto">
+        <table class="salary-table">
+          <thead><tr><th>Nghề</th><th>Fresher</th><th>Mid-level</th><th>Senior</th></tr></thead>
+          <tbody>
+            <tr><td>🛠️ Helpdesk</td><td>6–8 triệu</td><td>10–15 triệu</td><td>20–30 triệu</td></tr>
+            <tr><td>💼 IT Consultant</td><td>7–15 triệu</td><td>15–25 triệu</td><td>25–45 triệu</td></tr>
+            <tr><td>🖥️ Sys/Net Admin</td><td>12 triệu</td><td>16 triệu</td><td>22 triệu</td></tr>
+            <tr><td>🔒 Cybersecurity</td><td>15–20 triệu</td><td>20–35 triệu</td><td>40–60 triệu</td></tr>
+            <tr><td>🔧 Sửa chữa PC</td><td>11 triệu</td><td>14 triệu</td><td>17 triệu</td></tr>
+            <tr><td>🌐 Web Dev</td><td>5 triệu</td><td>8–10 triệu</td><td>10–20+ triệu</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section id="trends">
+      <div class="section-label" style="background:rgba(0,206,201,.16);color:var(--accent2)">Xu hướng</div>
+      <h2 class="section-title">Xu hướng ngành</h2>
+      <p class="section-desc">Sự phát triển của cloud, AI và mô hình làm việc linh hoạt mở rộng cơ hội nghề nghiệp.</p>
+      <div class="trends-grid">
+        <div class="card trend-card"><div class="feature-icon">🏠</div><h3>Remote/Freelance</h3><p>Tăng cơ hội làm việc xuyên biên giới.</p></div>
+        <div class="card trend-card"><div class="feature-icon">☁️</div><h3>Cloud-first</h3><p>Hạ tầng cloud trở thành tiêu chuẩn mới.</p></div>
+        <div class="card trend-card"><div class="feature-icon">🧠</div><h3>AI hỗ trợ vận hành</h3><p>Tự động hóa giám sát, phân tích và hỗ trợ người dùng.</p></div>
+        <div class="card trend-card"><div class="feature-icon">🛡️</div><h3>Bảo mật tăng tốc</h3><p>Security trở thành trụ cột trong mọi dự án số hóa.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-label" style="background:rgba(116,185,255,.16);color:var(--accent6)">Kỹ năng</div>
+      <h2 class="section-title">Bản đồ kỹ năng nhanh</h2>
+      <div class="skill-map">
+        <span class="skill-bubble">CCNA</span><span class="skill-bubble">AWS</span><span class="skill-bubble">Security+</span><span class="skill-bubble">Linux</span>
+        <span class="skill-bubble">Docker</span><span class="skill-bubble">TCP/IP</span><span class="skill-bubble">Python</span><span class="skill-bubble">Git</span>
+        <span class="skill-bubble">Node.js</span><span class="skill-bubble">JavaScript</span><span class="skill-bubble">SIEM</span><span class="skill-bubble">VMware</span>
+      </div>
+    </section>
+
+    <footer>
+      <span class="footer-logo">IT Services Career Guide</span>
+      <p>Tự host trên website riêng • Sẵn sàng deploy trên Render</p>
+      <p style="margin-top:.35rem;opacity:.6">© 2025</p>
+    </footer>
+
+    <script>
+      const container = document.getElementById('particles');
+      const colors = ['#6c5ce7','#00cec9','#fd79a8','#fdcb6e','#55efc4','#74b9ff'];
+      for (let i = 0; i < 30; i += 1) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.animationDuration = `${8 + Math.random() * 12}s`;
+        p.style.animationDelay = `${Math.random() * 8}s`;
+        const size = 2 + Math.random() * 4;
+        p.style.width = `${size}px`;
+        p.style.height = `${size}px`;
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        container.appendChild(p);
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.feature-card,.career-card,.trend-card,.pros-box,.cons-box').forEach((el) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(24px)';
+        el.style.transition = 'all .55s ease';
+        observer.observe(el);
+      });
+    </script>
   </body>
 </html>

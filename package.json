@@ -1,8 +1,8 @@
 {
-  "name": "claude-embed-launcher",
+  "name": "it-services-career-guide",
   "version": "1.0.0",
   "private": true,
-  "description": "Render-compatible launcher page for a Claude embed iframe",
+  "description": "Self-hosted IT Services career website for Render",
   "scripts": {
     "start": "node server.js"
   },
